@@ -57,7 +57,7 @@ EOF1
 
 resource "aws_iam_role_policy" "build-policy" {
   name = "build-${var.name}"
-  role = "${aws_iam_role.build-codebuild}"
+  role = "${aws_iam_role.build-codebuild.name}"
   policy = <<POLICY
 {
   "Version": "2012-10-17",
@@ -149,7 +149,7 @@ resource "aws_codebuild_project" "pipeline" {
   }
   "environment" {
     compute_type = "BUILD_GENERAL1_SMALL"
-    image = "$aws/codebuild/golang:1.10"
+    image = "aws/codebuild/golang:1.10"
     type = "LINUX_CONTAINER"
   }
   "source" {
@@ -162,7 +162,7 @@ resource "aws_codebuild_project" "pipeline" {
 }
 
 resource "aws_codepipeline" "web-app" {
-  name = "web-app"
+  name = "${var.name}"
   "artifact_store" {
     location = "${aws_s3_bucket.build.bucket}"
     type = "S3"
