@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+    # printenv
+    # pwd
+    - mkdir -p /go/src/github.com/weAutomateEverything/file2s3hal
+    - cp -R * /go/src/github.com/weAutomateEverything/file2s3hal/
+  pre_build:
+    commands:
+
+    finally:
+
+  build:
+    commands:
+    - go get github.com/weAutomateEverything/file2s3hal
+    - GOOS=linux CGO_ENABLED=1 go build -ldflags '-linkmode=external' -o ./file2s3hal github.com/weAutomateEverything/file2s3hal
+    -
+  post_build:
+    commands:
+    - aws s3 cp ./file2s3hal "s3://file2s3hal/file2s3hal" --acl public-read
+
+    finally:
+
+artifacts:
+  files:
+  - file2s3hal
+cache:
+  paths:
