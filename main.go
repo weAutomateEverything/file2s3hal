@@ -44,7 +44,7 @@ func main(){
 func sendFile(event watcher.Event) {
 	sess := session.Must(session.NewSession())
 	uploader := s3manager.NewUploader(sess)
-	f, err  := os.Open(event.Name())
+	f, err  := os.Open(event.Path+event.Name())
 	if err != nil {
 		log.Fatalf("failed to open file %q, %v", event.Name(), err)
 	}
